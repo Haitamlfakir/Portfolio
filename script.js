@@ -46,10 +46,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 window.addEventListener('scroll', function() {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+        navbar.style.background = 'rgba(13, 17, 23, 0.98)';
+        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.5)';
     } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+        navbar.style.background = 'rgba(13, 17, 23, 0.95)';
         navbar.style.boxShadow = 'none';
     }
 });
@@ -76,45 +76,89 @@ window.addEventListener('scroll', function() {
     });
 });
 
-// Contact form handling
-const contactForm = document.querySelector('.contact-form');
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get form data
-        const formData = new FormData(this);
-        const name = this.querySelector('input[type="text"]').value;
-        const email = this.querySelector('input[type="email"]').value;
-        const subject = this.querySelectorAll('input[type="text"]')[1].value;
-        const message = this.querySelector('textarea').value;
-        
-        // Simple validation
-        if (!name || !email || !subject || !message) {
-            showNotification('Please fill in all fields', 'error');
-            return;
+// Initialize EmailJS and Contact form handling
+window.addEventListener('load', function() {
+    // Setup contact form
+    function setupContactForm() {
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Check if EmailJS is loaded
+                if (typeof emailjs === 'undefined') {
+                    showNotification('Email service not initialized. Please configure EmailJS.', 'error');
+                    return;
+                }
+                
+                // Get form data
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const subject = document.getElementById('subject').value.trim();
+                const message = document.getElementById('message').value.trim();
+                const submitBtn = document.getElementById('submitBtn');
+                
+                // Simple validation
+                if (!name || !email || !subject || !message) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                if (!isValidEmail(email)) {
+                    showNotification('Please enter a valid email address', 'error');
+                    return;
+                }
+                
+                // Update button state
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+                
+                // EmailJS service parameters
+                // Replace these with your actual EmailJS Service ID and Template ID
+                const serviceID = 'service_5wa2ogn';
+                const templateID = 'template_j2u5q4g';
+                
+                // Prepare template parameters
+                const templateParams = {
+                    from_name: name,
+                    from_email: email,
+                    subject: subject,
+                    message: message,
+                    to_email: 'haytamlfakir@gmail.com' // Your email address
+                };
+                
+                // Send email using EmailJS
+                emailjs.send(serviceID, templateID, templateParams)
+                    .then(function(response) {
+                        showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
+                        contactForm.reset();
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    }, function(error) {
+                        console.error('EmailJS Error:', error);
+                        showNotification('Failed to send message. Please try again or contact me directly at haytamlfakir@gmail.com', 'error');
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    });
+            });
         }
-        
-        if (!isValidEmail(email)) {
-            showNotification('Please enter a valid email address', 'error');
-            return;
+    }
+    
+    // Wait for EmailJS to load, then initialize
+    function initEmailJS() {
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init("6o19632Ioe5MXDBPr"); // Replace with your EmailJS Public Key
+            setupContactForm();
+        } else {
+            // Retry after a short delay if EmailJS hasn't loaded yet
+            setTimeout(initEmailJS, 100);
         }
-        
-        // Simulate form submission
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
-        
-        setTimeout(() => {
-            showNotification('Message sent successfully!', 'success');
-            this.reset();
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }, 2000);
-    });
-}
+    }
+    
+    // Initialize when page loads
+    initEmailJS();
+});
 
 // Email validation function
 function isValidEmail(email) {
@@ -253,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add cursor effect
         highlightSpan.style.position = 'relative';
-        highlightSpan.style.borderRight = '2px solid #fbbf24';
+        highlightSpan.style.borderRight = '2px solid #00ff88';
         highlightSpan.style.animation = 'blink 1s infinite';
     }
 });
@@ -262,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function() {
 const style = document.createElement('style');
 style.textContent = `
     .nav-link.active {
-        color: #2563eb;
+        color: #00ff88;
     }
     
     .nav-link.active::after {
@@ -283,7 +327,7 @@ style.textContent = `
     
     @keyframes blink {
         0%, 50% {
-            border-right-color: #fbbf24;
+            border-right-color: #00ff88;
         }
         51%, 100% {
             border-right-color: transparent;
@@ -296,3 +340,131 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Chat AI Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const chatWidget = document.getElementById('chatWidget');
+    const chatHeader = document.getElementById('chatHeader');
+    const chatBody = document.getElementById('chatBody');
+    const chatToggle = document.getElementById('chatToggle');
+    const chatToggleIcon = document.getElementById('chatToggleIcon');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const chatSendBtn = document.getElementById('chatSend');
+
+    let isCollapsed = false;
+
+    // Toggle chat
+    chatHeader.addEventListener('click', function() {
+        isCollapsed = !isCollapsed;
+        chatBody.classList.toggle('collapsed', isCollapsed);
+        chatToggle.classList.toggle('active', isCollapsed);
+    });
+
+    // Send message function
+    function sendMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        // Add user message
+        addMessage(message, 'user');
+        chatInput.value = '';
+
+        // Disable input while processing
+        chatSendBtn.disabled = true;
+        chatInput.disabled = true;
+
+        // Simulate AI response
+        setTimeout(() => {
+            const response = generateResponse(message);
+            addMessage(response, 'bot');
+            chatSendBtn.disabled = false;
+            chatInput.disabled = false;
+            chatInput.focus();
+        }, 500);
+    }
+
+    // Add message to chat
+    function addMessage(text, type) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${type}-message`;
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        
+        const p = document.createElement('p');
+        p.textContent = text;
+        
+        contentDiv.appendChild(p);
+        messageDiv.appendChild(contentDiv);
+        chatMessages.appendChild(messageDiv);
+        
+        // Scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Generate AI response based on user query
+    function generateResponse(query) {
+        const lowerQuery = query.toLowerCase();
+        
+        // Portfolio information
+        if (lowerQuery.includes('name') || lowerQuery.includes('who')) {
+            return "Haitam Lfakir is a Software Application Developer with 2+ years of experience creating modern, responsive software applications.";
+        }
+        
+        if (lowerQuery.includes('skill') || lowerQuery.includes('technology') || lowerQuery.includes('tech')) {
+            return "Haitam's skills include: Frontend (HTML5, CSS3, JavaScript, React, Flutter), Backend (Node.js, PHP, MySQL, Python), and Tools (Git, Figma, Postman, VS Code, Docker).";
+        }
+        
+        if (lowerQuery.includes('project') || lowerQuery.includes('app') || lowerQuery.includes('work')) {
+            return "Haitam has worked on several projects including: Lahja - a real-time chat app with Flutter, Firebase, and GetX; and an E-commerce Mobile App built with Flutter, Firebase, PHP, MySQL, and MVC architecture.";
+        }
+        
+        if (lowerQuery.includes('experience') || lowerQuery.includes('year')) {
+            return "Haitam has 2+ years of experience in software development, with expertise in mobile application development using Flutter.";
+        }
+        
+        if (lowerQuery.includes('contact') || lowerQuery.includes('email') || lowerQuery.includes('reach')) {
+            return "You can contact Haitam at haytamlfakir@gmail.com or +212 0621813154. He's located in Rabat, Morocco. You can also find him on GitHub, LinkedIn, and Instagram.";
+        }
+        
+        if (lowerQuery.includes('education') || lowerQuery.includes('degree') || lowerQuery.includes('university')) {
+            return "For detailed education and background information, please check the portfolio sections or reach out directly via the contact form.";
+        }
+        
+        if (lowerQuery.includes('flutter') || lowerQuery.includes('dart')) {
+            return "Flutter is one of Haitam's main technologies. He uses it for cross-platform mobile development, building apps that work on both Android and iOS.";
+        }
+        
+        if (lowerQuery.includes('firebase')) {
+            return "Haitam uses Firebase for backend services including real-time databases, authentication, and cloud storage in his applications.";
+        }
+        
+        if (lowerQuery.includes('hello') || lowerQuery.includes('hi') || lowerQuery.includes('hey')) {
+            return "Hello! I'm here to help you learn more about Haitam's portfolio. What would you like to know?";
+        }
+        
+        if (lowerQuery.includes('help')) {
+            return "I can help you learn about Haitam's skills, projects, experience, contact information, and technologies. Just ask me anything!";
+        }
+        
+        // Default response
+        return "I'm not sure about that specific detail. You can ask me about Haitam's skills, projects, experience, or contact information. Feel free to ask anything else!";
+    }
+
+    // Send button click
+    chatSendBtn.addEventListener('click', sendMessage);
+
+    // Enter key to send
+    chatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    // Focus input when chat opens
+    if (!isCollapsed) {
+        chatInput.focus();
+    }
+});
