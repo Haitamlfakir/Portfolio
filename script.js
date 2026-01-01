@@ -354,11 +354,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let isCollapsed = false;
 
+    // Check if device is mobile
+    function isMobileDevice() {
+        return window.innerWidth <= 768;
+    }
+
     // Toggle chat
     chatHeader.addEventListener('click', function() {
         isCollapsed = !isCollapsed;
         chatBody.classList.toggle('collapsed', isCollapsed);
         chatToggle.classList.toggle('active', isCollapsed);
+        
+        // On mobile, add/remove collapsed-mobile class to widget
+        if (isMobileDevice()) {
+            if (isCollapsed) {
+                chatWidget.classList.add('collapsed-mobile');
+            } else {
+                chatWidget.classList.remove('collapsed-mobile');
+            }
+        }
     });
 
     // Send message function
@@ -463,6 +477,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Handle window resize to update mobile state
+    window.addEventListener('resize', function() {
+        if (!isMobileDevice() && chatWidget.classList.contains('collapsed-mobile')) {
+            chatWidget.classList.remove('collapsed-mobile');
+        }
+    });
+    
     // Focus input when chat opens
     if (!isCollapsed) {
         chatInput.focus();

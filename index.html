@@ -943,9 +943,57 @@ section {
     transform: none;
 }
 
+@media (max-width: 768px) {
+    /* Mobile: When chat is collapsed, show only icon */
+    .chat-widget.collapsed-mobile {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        padding: 0;
+    }
+    
+    .chat-widget.collapsed-mobile .chat-header {
+        padding: 0;
+        border-bottom: none;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+    
+    .chat-widget.collapsed-mobile .chat-header-content span {
+        display: none;
+    }
+    
+    .chat-widget.collapsed-mobile .chat-header-content i {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    
+    .chat-widget.collapsed-mobile .chat-toggle {
+        display: none;
+    }
+    
+    .chat-widget.collapsed-mobile .chat-header-content {
+        gap: 0;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+}
+
 @media (max-width: 480px) {
     .chat-widget {
         width: calc(100vw - 20px);
+        right: 10px;
+        bottom: 10px;
+    }
+    
+    .chat-widget.collapsed-mobile {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
         right: 10px;
         bottom: 10px;
     }
@@ -1079,7 +1127,7 @@ section {
                 <h1 class="hero-title">
                     Hi, I'm <span class="highlight">Haitam Lfakir</span>
                 </h1>
-                <p class="hero-subtitle">Software Application Developer</p>
+                <p class="hero-subtitle">Software Developer</p>
                 <p class="hero-description">
                     I create beautiful, responsive websites and applications that provide great user experiences.
                 </p>
@@ -1378,7 +1426,7 @@ section {
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-phone"></i>
-                            <span>0621813154</span>
+                            <span>(+212) 0621813154</span>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-map-marker-alt"></i>
@@ -1422,7 +1470,7 @@ section {
         <div class="chat-header" id="chatHeader">
             <div class="chat-header-content">
                 <i class="fas fa-robot"></i>
-                <span>Ask me anything</span>
+                <span>Don't be shy</span>
             </div>
             <button class="chat-toggle" id="chatToggle">
                 <i class="fas fa-chevron-down" id="chatToggleIcon"></i>
@@ -1432,12 +1480,12 @@ section {
             <div class="chat-messages" id="chatMessages">
                 <div class="chat-message bot-message">
                     <div class="message-content">
-                        <p>Hi! I'm an AI assistant. Ask me anything about Haitam's portfolio, skills, projects, or experience!</p>
+                        <p>Welcome! 🚀 Curious about Haitam’s work or skills? Just ask. I’ve got you covered.</p>
                     </div>
                 </div>
             </div>
             <div class="chat-input-container">
-                <input type="text" id="chatInput" class="chat-input" placeholder="Type your message..." autocomplete="off">
+                <input type="text" id="chatInput" class="chat-input" placeholder="Hmm..." autocomplete="off">
                 <button id="chatSend" class="chat-send-btn">
                     <i class="fas fa-paper-plane"></i>
                 </button>
