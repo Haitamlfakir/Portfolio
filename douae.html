@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Douae! 🎂</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --gold: #f4d03f;
+      --rose: #e8b4b8;
+      --coral: #ff6b6b;
+      --mint: #a8e6cf;
+      --lavender: #d4a5d9;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      top: 0;
+      animation: fall linear infinite;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .confetti:nth-child(1) { left: 10%; animation-duration: 8s; background: var(--gold); }
+    .confetti:nth-child(2) { left: 20%; animation-duration: 6s; background: var(--rose); animation-delay: 1s; }
+    .confetti:nth-child(3) { left: 30%; animation-duration: 7s; background: var(--coral); animation-delay: 2s; }
+    .confetti:nth-child(4) { left: 40%; animation-duration: 9s; background: var(--mint); animation-delay: 0.5s; }
+    .confetti:nth-child(5) { left: 50%; animation-duration: 6.5s; background: var(--lavender); animation-delay: 1.5s; }
+    .confetti:nth-child(6) { left: 60%; animation-duration: 8.5s; background: var(--gold); animation-delay: 3s; }
+    .confetti:nth-child(7) { left: 70%; animation-duration: 7.5s; background: var(--rose); }
+    .confetti:nth-child(8) { left: 80%; animation-duration: 6s; background: var(--coral); animation-delay: 2.5s; }
+    .confetti:nth-child(9) { left: 90%; animation-duration: 8s; background: var(--mint); animation-delay: 1s; }
+
+    @keyframes fall {
+      from { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+      to { transform: translateY(100vh) rotate(720deg); opacity: 0.5; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .cake-emoji {
+      font-size: 5rem;
+      animation: bounce 1s ease-in-out infinite alternate;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes bounce {
+      from { transform: scale(1) translateY(0); }
+      to { transform: scale(1.1) translateY(-10px); }
+    }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      background: linear-gradient(90deg, var(--gold), var(--rose), var(--coral), var(--lavender));
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradient-shift 4s ease infinite;
+    }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .name {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(3rem, 12vw, 7rem);
+      font-weight: 700;
+      margin: 1rem 0;
+      background: linear-gradient(135deg, var(--gold), var(--coral));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 20px rgba(244, 208, 63, 0.5)); }
+      to { filter: drop-shadow(0 0 40px rgba(255, 107, 107, 0.8)); }
+    }
+
+    .message {
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      max-width: 500px;
+      margin: 2rem auto;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .balloons {
+      display: flex;
+      gap: 2rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .balloon {
+      font-size: 2.5rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .balloon:nth-child(1) { animation-delay: 0s; }
+    .balloon:nth-child(2) { animation-delay: 0.5s; }
+    .balloon:nth-child(3) { animation-delay: 1s; }
+    .balloon:nth-child(4) { animation-delay: 1.5s; }
+    .balloon:nth-child(5) { animation-delay: 2s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50% { transform: translateY(-15px) rotate(5deg); }
+    }
+
+    .heart {
+      display: inline-block;
+      animation: heartbeat 1s ease-in-out infinite;
+      margin: 0 0.2rem;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+
+  <main class="container">
+    <div class="cake-emoji">🎂</div>
+    <h1>Happy Birthday</h1>
+    <p class="name">Douae</p>
+    <div class="balloons">
+      <span class="balloon">🎈</span>
+      <span class="balloon">🎈</span>
+      <span class="balloon">🎈</span>
+      <span class="balloon">🎈</span>
+      <span class="balloon">🎈</span>
+    </div>
+    <p class="message">
+      Wishing you a day filled with joy, laughter, and all the things that make you smile!
+      <span class="heart">💕</span> Have the most amazing birthday, friend!
+    </p>
+    <p class="message">
+      May this year bring you endless happiness and wonderful adventures. You deserve it all! 🌟
+    </p>
+    <footer>Made with <span class="heart">❤️</span> for Douae</footer>
+  </main>
+</body>
+</html>
