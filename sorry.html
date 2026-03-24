@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I'm Sorry 💔</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #e8405a;
+    --blush: #f5a7b8;
+    --deep: #6b1a2a;
+    --cream: #fff5f7;
+    --gold: #d4a96a;
+    --soft: #fce4ec;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Gradient background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(232,64,90,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(212,169,106,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 50%, rgba(245,167,184,0.1) 0%, transparent 80%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Floating hearts background */
+  .hearts-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .heart-float {
+    position: absolute;
+    animation: floatUp linear infinite;
+    opacity: 0;
+    font-size: 1.2rem;
+    filter: blur(0.3px);
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg) scale(0.5); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-10vh) rotate(25deg) scale(1.2); opacity: 0; }
+  }
+
+  /* Main container */
+  .container {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .card {
+    background: rgba(255, 245, 247, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(232, 64, 90, 0.2);
+    border-radius: 32px;
+    padding: 3.5rem 3rem;
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+    box-shadow:
+      0 32px 80px rgba(107, 26, 42, 0.12),
+      0 0 0 1px rgba(255,255,255,0.6) inset,
+      0 8px 32px rgba(232, 64, 90, 0.08);
+    animation: cardReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes cardReveal {
+    from { opacity: 0; transform: translateY(60px) scale(0.94); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Big heart icon */
+  .big-heart {
+    font-size: 5rem;
+    display: block;
+    animation: heartBeat 1.4s ease-in-out infinite;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 8px 24px rgba(232,64,90,0.4));
+  }
+
+  @keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    14% { transform: scale(1.15); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.08); }
+    70% { transform: scale(1); }
+  }
+
+  /* Sorry title */
+  .sorry-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1rem;
+    letter-spacing: 0.35em;
+    color: var(--rose);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.6rem, 8vw, 4rem);
+    color: var(--deep);
+    line-height: 1.1;
+    margin-bottom: 1.8rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s ease both;
+  }
+
+  .title em {
+    color: var(--rose);
+    font-style: italic;
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1.5rem auto;
+    width: fit-content;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s ease both;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--blush));
+  }
+
+  .divider::after {
+    background: linear-gradient(to left, transparent, var(--blush));
+  }
+
+  /* Main message */
+  .message {
+    font-size: clamp(1.25rem, 4vw, 1.65rem);
+    color: var(--deep);
+    line-height: 1.7;
+    font-weight: 400;
+    font-style: italic;
+    margin-bottom: 0.8rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s ease both;
+    text-shadow: 0 1px 2px rgba(107,26,42,0.05);
+  }
+
+  .message strong {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--rose);
+  }
+
+  /* Sub message */
+  .sub-message {
+    font-size: 1.05rem;
+    color: rgba(107,26,42,0.6);
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.2s ease both;
+  }
+
+  /* Hearts row */
+  .hearts-row {
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.4s ease both;
+  }
+
+  .hearts-row span {
+    font-size: 1.4rem;
+    animation: sparkle 2s ease-in-out infinite;
+  }
+
+  .hearts-row span:nth-child(1) { animation-delay: 0s; }
+  .hearts-row span:nth-child(2) { animation-delay: 0.2s; }
+  .hearts-row span:nth-child(3) { animation-delay: 0.4s; }
+  .hearts-row span:nth-child(4) { animation-delay: 0.6s; }
+  .hearts-row span:nth-child(5) { animation-delay: 0.8s; }
+
+  @keyframes sparkle {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.3); opacity: 1; }
+  }
+
+  /* WhatsApp button */
+  .wa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+    text-decoration: none;
+    padding: 1rem 2.2rem;
+    border-radius: 100px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    box-shadow: 0 8px 32px rgba(37, 211, 102, 0.35), 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity: 0;
+    animation: fadeUp 0.8s 1.6s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wa-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+    border-radius: inherit;
+  }
+
+  .wa-btn:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 16px 48px rgba(37, 211, 102, 0.45), 0 4px 12px rgba(0,0,0,0.12);
+  }
+
+  .wa-btn:active {
+    transform: translateY(-1px) scale(0.99);
+  }
+
+  .wa-icon {
+    width: 24px;
+    height: 24px;
+    fill: white;
+    flex-shrink: 0;
+  }
+
+  /* Petal decorations */
+  .petal {
+    position: absolute;
+    font-size: 1rem;
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .petal:nth-child(1) { top: 5%; left: 8%; transform: rotate(-20deg); font-size: 1.8rem; }
+  .petal:nth-child(2) { top: 12%; right: 10%; transform: rotate(15deg); font-size: 1.2rem; }
+  .petal:nth-child(3) { bottom: 10%; left: 6%; transform: rotate(10deg); font-size: 2rem; }
+  .petal:nth-child(4) { bottom: 15%; right: 8%; transform: rotate(-30deg); font-size: 1.4rem; }
+  .petal:nth-child(5) { top: 45%; left: -1%; font-size: 1rem; opacity: 0.15; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Signature */
+  .signature {
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    color: rgba(107,26,42,0.35);
+    font-style: italic;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.8s ease both;
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating hearts background -->
+<div class="hearts-bg" id="heartsContainer"></div>
+
+<!-- Main content -->
+<div class="container">
+  <div class="card">
+    <!-- Decorative petals -->
+    <span class="petal">🌸</span>
+    <span class="petal">🌹</span>
+    <span class="petal">🌺</span>
+    <span class="petal">💮</span>
+    <span class="petal">🌷</span>
+
+    <span class="big-heart">💔</span>
+
+    <p class="sorry-label">From the bottom of my heart</p>
+
+    <h1 class="title">Je suis<br><em>désolé...</em></h1>
+
+    <div class="divider">💕</div>
+
+    <p class="message">
+      <strong>Kanmot 3lik azayn dl3alam</strong><br>
+      kanhma9 3lik
+    </p>
+
+    <p class="sub-message">
+      lyom hlemt ana wyak o bntna ghadyin ftri9 o kandhko o frhanin o hiya kadhek o sotha yasalam. Tkhayli hadi tkon chi sign mn 3nd lah<br>
+      Smḥi liya, please. 🥺
+    </p>
+
+    <div class="hearts-row">
+      <span>🤍</span>
+      <span>💗</span>
+      <span>❤️</span>
+      <span>💗</span>
+      <span>🤍</span>
+    </div>
+
+    <!-- WhatsApp Button — replace +212XXXXXXXXX with your number -->
+    <a class="wa-btn" href="https://wa.me/212621813154?text=Machi%20Mochkil%20babe%20%E2%9D%A4%EF%B8%8F" target="_blank">
+      <svg class="wa-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      Envoyer un message 💬
+    </a>
+
+    <p class="signature">made with love & a broken heart 💔</p>
+  </div>
+</div>
+
+<script>
+  // Spawn floating hearts
+  const emojis = ['❤️','💕','💗','💖','💓','🌹','💋','✨','💝','🥀'];
+  const container = document.getElementById('heartsContainer');
+
+  function spawnHeart() {
+    const el = document.createElement('span');
+    el.classList.add('heart-float');
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.fontSize = (0.8 + Math.random() * 1.4) + 'rem';
+    el.style.animationDuration = (6 + Math.random() * 8) + 's';
+    el.style.animationDelay = (Math.random() * 4) + 's';
+    container.appendChild(el);
+    setTimeout(() => el.remove(), 14000);
+  }
+
+  // Initial burst
+  for (let i = 0; i < 18; i++) {
+    setTimeout(spawnHeart, i * 200);
+  }
+
+  // Continuous spawning
+  setInterval(spawnHeart, 700);
+
+  // Click anywhere to spawn hearts burst
+  document.addEventListener('click', (e) => {
+    for (let i = 0; i < 6; i++) {
+      const el = document.createElement('span');
+      el.classList.add('heart-float');
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.left = (e.clientX / window.innerWidth * 100) + 'vw';
+      el.style.bottom = '0';
+      el.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+      el.style.animationDuration = (3 + Math.random() * 4) + 's';
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 7000);
+    }
+  });
+</script>
+</body>
+</html>
